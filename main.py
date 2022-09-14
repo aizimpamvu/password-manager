@@ -60,9 +60,10 @@ def save():
                     # Saving updated data
                     json.dump(data, data_file, indent=4)
 
-                    website_entry.delete(0, END)
-                    email_entry.delete(0, END)
-                    password_entry.delete(0, END)
+            finally:
+                website_entry.delete(0, END)
+                password_entry.delete(0, END)
+
 
 
 
