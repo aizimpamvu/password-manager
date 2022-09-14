@@ -49,19 +49,21 @@ def save():
                 with open("data.json", "r") as data_file:
                     # Reading old data
                     data = json.load(data_file)
-                    #Update old data with new data
-                    data.update(new_data)
+            except FileNotFoundError:
+                with open("data.json", "w") as data_file:
+                    json.dump(new_data, data_file, indent=4)
+            else:
+                #Update old data with new data
+                data.update(new_data)
 
                 with open("data.json", "w") as data_file:
                     # Saving updated data
-                    json.dump(new_data, data_file, indent=4)
+                    json.dump(data, data_file, indent=4)
 
                     website_entry.delete(0, END)
                     email_entry.delete(0, END)
                     password_entry.delete(0, END)
-            except FileNotFoundError:
-                with open("data.json", "w") as data_file:
-                    json.dump(new_data,data_file)
+
 
 
 # ---------------------------- UI SETUP ------------------------------- #
