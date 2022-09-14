@@ -66,6 +66,16 @@ def save():
 
 
 
+# ---------------------------- SEARCH A WEBSITE ------------------------------- #
+def web_details():
+    website = website_entry.get()
+    with open("data.json") as data_file:
+        data = json.load(data_file)
+        if website in data:
+            email = data[website]["email"]
+            password = data[website]["password"]
+    messagebox.showinfo(title=website, message=f"Email: {email}\n Password: {password}")
+
 
 # ---------------------------- UI SETUP ------------------------------- #
 
@@ -102,5 +112,7 @@ generate_password_button = Button(text="Generate Password", width=20, command=ge
 generate_password_button.grid(row=3, column=2)
 add_button = Button(text="Add", width=50, command=save)
 add_button.grid(row=4, column=1, columnspan=2)
+search_button = Button(text="Search", width=20, command=web_details)
+search_button.grid(row=1, column=2)
 
 window.mainloop()
