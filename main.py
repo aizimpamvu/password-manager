@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
-from random import randint,choice, shuffle
+from random import randint, choice, shuffle
+import json
 # import pyperclip #used to have a clipboard
 
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
@@ -29,6 +30,12 @@ def save():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    new_data = {
+        website: {
+            "email": email,
+            "password": password
+        }
+    }
 
     if len(website) == 0 or len(password) == 0:
         messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
@@ -38,11 +45,23 @@ def save():
                                                         f"\n Password: {password} \n is ok to save")
 
         if is_ok:
-            with open("data.text", "a") as data_file:
-                data_file.write(f"{website} | {email} | {password} \n")
-                website_entry.delete(0, END)
-                email_entry.delete(0, END)
-                password_entry.delete(0, END)
+            try:
+                with open("data.json", "r") as data_file:
+                    # Reading old data
+                    data = json.load(data_file)
+                    #Update old data with new data
+                    data.update(new_data)
+
+                with open("data.json", "w") as data_file:
+                    # Saving updated data
+                    json.dump(new_data, data_file, indent=4)
+
+                    website_entry.delete(0, END)
+                    email_entry.delete(0, END)
+                    password_entry.delete(0, END)
+            except FileNotFoundError:
+                with open("data.json", "w") as data_file:
+                    json.dump(new_data,data_file)
 
 
 # ---------------------------- UI SETUP ------------------------------- #
